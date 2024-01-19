@@ -14,34 +14,36 @@ import {
 } from "@/components/ui/table"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { MdModeEdit, MdDelete } from "react-icons/md";
 import {
   Sheet,
   SheetClose,
   SheetContent,
   SheetTrigger,
 } from "@/components/ui/sheet"
-import { ScrollArea } from "@/components/ui/scroll-area"
 import CreateCategories from './CreateCategories'
-import { useSearchParams } from 'next/navigation'
+import UpdateCategory from './UpdateCategory'
+
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
 
 export default function Categories() {
-  const { fetchAllCategories, allCategories }: any = useAdmin();
+  const { fetchAllCategories, allCategories, deleteCategories }: any = useAdmin();
   const [categoriesList, setcategoriesList] = useState(allCategories)
-  // const pageNum = use pagination
-  const searchParams = useSearchParams()
-  let pageNum: any = searchParams.get("a") ?? 1
-  const [page, setpage] = useState(1)
-  const [pagination, setPagination] = useState<any>({ start: (page - 1) * 10, end: page * 10 })
   useEffect(() => {
     fetchAllCategories()
-    console.log("Searc params ",)
   }, [])
   // update categories
   useEffect(() => {
-    console.log("page", page)
-    setPagination({ start: (page - 1) * 10, end: page * 10 })
-    setcategoriesList(allCategories.slice(pagination.start, pagination.end))
-  }, [allCategories, page])
+    setcategoriesList(allCategories)
+  }, [allCategories])
 
   return (
     <main>
@@ -77,9 +79,46 @@ export default function Categories() {
               {categoriesList.map((e: any, i: any) => (
                 <TableRow key={e._id}>
                   <TableCell className="font-medium">{i + 1}</TableCell>
+                  {/* <TableCell className="font-medium select-text">{e._id}</TableCell> */}
                   <TableCell>{e.name}</TableCell>
                   <TableCell>{new Date(e.createdAt).toDateString()}</TableCell>
-                  <TableCell className="text-right">d , a</TableCell>
+                  <TableCell className="text-right">
+                    <div className='ml-auto flex items-center w-fit justify-center gap-3'>
+                      {/* update sheet */}
+                      <Sheet>
+                        <SheetTrigger asChild>
+                          <MdModeEdit />
+                        </SheetTrigger>
+                        <SheetContent side={"left"}>
+                          <UpdateCategory value={e.name} _id={e._id} />
+                        </SheetContent>
+                      </Sheet>
+
+                      {/* delete category modal */}
+                      <Dialog>
+                        <DialogTrigger asChild>
+                          <MdDelete />
+                        </DialogTrigger>
+                        <DialogContent className="sm:max-w-[425px]">
+                          <DialogHeader>
+                            <DialogTitle>Delte category {e.name}</DialogTitle>
+                            <DialogDescription>
+                              This process is not reversible are you sure want to delte this category
+                            </DialogDescription>
+                          </DialogHeader>
+                          <DialogFooter>
+                            <DialogTrigger asChild>
+                              <Button variant="outline">No , keep it</Button>
+                            </DialogTrigger>
+                            <DialogTrigger asChild>
+                              <Button variant="destructive" onClick={()=>{deleteCategories(e._id)}}>Yes , delete</Button>
+                            </DialogTrigger>
+                          </DialogFooter>
+                        </DialogContent>
+                      </Dialog>
+
+                    </div>
+                  </TableCell>
                 </TableRow>
               ))}
             </>
@@ -87,17 +126,8 @@ export default function Categories() {
         </TableBody>
         <TableFooter>
           <TableRow>
-            <TableCell colSpan={3}>Page</TableCell>
-            <div>
-              <Button onClick={() => {
-                if (page > 1)
-                  setpage((e) => e - 1)
-              }}>prev</Button>
-              <Button onClick={() => {
-                if (page < allCategories?.length)
-                  setpage((e) => e + 1)
-              }}>next</Button>
-            </div>
+            <TableCell colSpan={3}>total</TableCell>
+            <TableCell className='text-right'>{allCategories.length}</TableCell>
           </TableRow>
         </TableFooter>
       </Table>

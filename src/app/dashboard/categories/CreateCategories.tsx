@@ -15,14 +15,14 @@ import {
 import { useAdmin } from '@/stores/useAdmin'
 
 export default function CreateCategories() {
-  const { addCategories, test }: any = useAdmin();
+  const { addCategories }: any = useAdmin();
   const [category, setcategory] = useState("")
   return (
     <main>
       <SheetHeader>
-        <SheetTitle>Edit profile</SheetTitle>
+        <SheetTitle>create new category</SheetTitle>
         <SheetDescription>
-          Make changes to your profile here. Click save when you're done.
+          create new categories Click create when you're done.
         </SheetDescription>
       </SheetHeader>
       <div className="grid gap-3 py-5">
@@ -37,15 +37,14 @@ export default function CreateCategories() {
           autoComplete={'off'}
         />
       </div>
-      {test.map(e => <>{e}</>)}
       <SheetFooter>
         <SheetClose>
-        <Button
-          type="submit"
-          onClick={() => addCategories({ name: category })}
-        >
-          Create Categories
-        </Button>
+          <Button
+            type="submit"
+            onClick={() => addCategories({ name: category })}
+          >
+            Create Categories
+          </Button>
         </SheetClose>
       </SheetFooter>
     </main>
