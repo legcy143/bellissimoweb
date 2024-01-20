@@ -14,8 +14,9 @@ export default function Dashboard() {
     )
     return (
         <main>
+            comming soon . . .
             <section className='gap-5 p-5 flex'>
-                {miniDetail?.map((e, i) => {
+                {/* {miniDetail?.map((e, i) => {
                     return <div
                         key={i}
                         className='p-3 capitalize min-w-[10rem] flex flex-col border rounded-md'
@@ -23,7 +24,7 @@ export default function Dashboard() {
                         <h2 className='text-xl font-semibold'>{e.title}</h2>
                         <p>{e.length}</p>
                     </div>
-                })}
+                })} */}
             </section>
         </main>
     )

@@ -6,7 +6,7 @@ import { IoCartSharp } from "react-icons/io5";
 import { PiUsersFill } from "react-icons/pi";
 import { IoLocation } from "react-icons/io5";
 import { HiSpeakerphone } from "react-icons/hi";
-import { LuPackageSearch } from "react-icons/lu";
+import { HiViewGridAdd } from "react-icons/hi";
 
 export default function DashboardSidebar() {
     const router = useRouter();
@@ -36,10 +36,10 @@ export default function DashboardSidebar() {
         {
             pathname: "categories",
             path: "/dashboard/categories",
-            icon: <LuPackageSearch />
+            icon: <HiViewGridAdd />
         },
         {
-            pathname: "locations",
+            pathname: "delivery location",
             path: "/dashboard/locations",
             icon: <IoLocation />
         },
